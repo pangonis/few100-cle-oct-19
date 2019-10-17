@@ -7,7 +7,7 @@ describe('Variables in TypeScript', () => {
 
         x = 3.14;
 
-        x = function (a, b) {
+        x = function (a: number, b: number) {
             return a + b;
         };
 

@@ -1,3 +1,6 @@
+import { isEven } from './utils';
+import { doubleIt } from './utils';
+
 describe('functions', () => {
     it('how to declare them', () => {
         // Two ways:
@@ -146,6 +149,31 @@ describe('functions', () => {
                 expect(pMaker('coolio')).toBe('<p>coolio</p>');
 
                 expect(tagMaker('h2')('kidding me?')).toBe('<h2>kidding me?</h2>');
+            });
+        });
+
+    });
+    describe('array methods', () => {
+        const number = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // it('visiting each element in an array', () => {
+        //     number.forEach((e, i, c) => console.log({ e, i, c }));
+        //     number.forEach((e) => console.log({ e }));
+        // });
+        describe('methods that create a new array', () => {
+            it('map', () => {
+                const doubled = number.map(n => n * 2);
+                const doubledAlt = number.map(doubleIt); // In Javascript a function can be treated like a variable - like a delegate kinda
+
+                expect(doubled).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18]);
+                expect(doubledAlt).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18]);
+            })
+            it('filter', () => {
+                const evens = number.filter(n => isEven(n));
+                const altApproach = number.filter(isEven); // In Javascript a function can be treated like a variable - like a delegate kinda
+
+                expect(evens).toEqual([2, 4, 6, 8]);
+                expect(altApproach).toEqual([2, 4, 6, 8]);
             });
         });
     });
