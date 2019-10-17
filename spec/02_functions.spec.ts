@@ -1,5 +1,6 @@
 import { isEven } from './utils';
 import { doubleIt } from './utils';
+import { accumulate } from './utils';
 
 describe('functions', () => {
     it('how to declare them', () => {
@@ -164,17 +165,71 @@ describe('functions', () => {
             it('map', () => {
                 const doubled = number.map(n => n * 2);
                 const doubledAlt = number.map(doubleIt); // In Javascript a function can be treated like a variable - like a delegate kinda
-
+ 
                 expect(doubled).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18]);
                 expect(doubledAlt).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18]);
             })
             it('filter', () => {
                 const evens = number.filter(n => isEven(n));
                 const altApproach = number.filter(isEven); // In Javascript a function can be treated like a variable - like a delegate kinda
-
                 expect(evens).toEqual([2, 4, 6, 8]);
                 expect(altApproach).toEqual([2, 4, 6, 8]);
             });
+            describe('methods that return a single value', () => {
+                describe('checking the membership', () => {
+                    it('seeing if all the members meet a criteria', () => {
+                        const allEven = number.every(isEven);
+                        expect(allEven).toBe(false);
+
+                        const someEven = number.some(isEven);
+                        expect(someEven).toBe(true);
+                    });
+                    it('has reduce', () =>{
+                        const total = number.reduce((s,n) => s + n);
+                        expect(total).toBe(45);
+
+                        const total2 = number.reduce((s,n) => s + n, 100);
+                        expect(total2).toBe(145);
+
+                        const totalOfDoubledEvens = number.filter(isEven).map(doubleIt).reduce(accumulate);
+                        expect(totalOfDoubledEvens).toBe(40);
+                    })
+                    it('practice', () => {
+                        interface CartItem {
+                            name: string;
+                            qty: number;
+                            price: number;
+                        }
+
+                        const cart: CartItem[] = [
+                            { name: 'Eggs', qty: 1, price: 2.99 },
+                            { name: 'Bread', qty: 3, price: 3.50 },
+                            { name: 'Shampoo', qty: 2, price: 7.25 }
+                        ];
+
+                        interface ShippingInfo {
+                            totalQty: number;
+                            totalPrice: number;
+                        }
+
+                        // how would we use reduce to get the shipping info from 
+                        // this cart. (the total number of things, the total price.)
+                        const initialState: ShippingInfo ={
+                            totalQty: 0,
+                            totalPrice: 0
+                        };
+
+                        const answer = cart.reduce((s: ShippingInfo,n: CartItem) => {
+                            return {
+                                totalQty: s.totalQty + n.qty,
+                                totalPrice: s.totalPrice + (n.qty * n.price)
+                            } as ShippingInfo;
+                        }, initialState);
+
+                        console.log("Answer:", answer);
+                    });                  
+                });
+            });    
         });
     });
 });
